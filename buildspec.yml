@@ -4,12 +4,12 @@ phases:
   pre_build:
     commands:
       - echo Ingresando a Amazon ECR...
-      - - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin
       - docker version
       
   build:
     commands:
       - echo Creando imagen de Docker...
-      - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME_DEV:$IMAGE_TAG_DEV .    
+      - docker build -t 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest .    
       - echo Copiando imagen de Docker a repositorio...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME_DEV:$IMAGE_TAG_DEV
+      - docker push 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
