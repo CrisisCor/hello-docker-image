@@ -14,7 +14,7 @@ phases:
       - cd ..
       - echo Ingresando a Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 800103408648.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
-      - fecha=$(date -u +"%Y-%m-%d-%H-%M-%S-UTC")
+      - fecha=$(date -u +"%Y-%m-%d-%H-%M-UTC")
       - echo $fecha
       
   build:
