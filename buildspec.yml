@@ -11,13 +11,14 @@ phases:
       - echo Ingresando a Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 800103408648.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - fecha=$(date -u +"%Y-%m-%d-%H-%M-%S-UTC")
+      - echo $fecha
       
   build:
     commands:
       - echo Creando imagen de Docker...
       - docker build -t 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest .
       - echo analizando vulnerabilidades en imagen
-      - trivy image --quiet --exit-code 1 --severity HIGH,CRITICAL --format html --output fecha.html 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
-      - aws s3 cp fecha.html s3://trivy-vulnerabilities-reports   
+      - trivy image --quiet --exit-code 1 --severity HIGH,CRITICAL --format html --output $fecha.html 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
+      - aws s3 cp $fecha.html s3://trivy-vulnerabilities-reports   
       - echo Copiando imagen de Docker a repositorio...
       - docker push 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
