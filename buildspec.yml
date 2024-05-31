@@ -18,7 +18,7 @@ phases:
       - echo Creando imagen de Docker...
       - docker build -t 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest .
       - echo analizando vulnerabilidades en imagen
-      - trivy image --quiet --severity HIGH,CRITICAL --format html --output $fecha.html 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
+      - trivy image --quiet --severity HIGH,CRITICAL 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
       - aws s3 cp $fecha.html s3://trivy-vulnerabilities-reports   
       - echo Copiando imagen de Docker a repositorio...
       - docker push 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
