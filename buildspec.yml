@@ -15,6 +15,8 @@ phases:
   build:
     commands:
       - echo Creando imagen de Docker...
-      - docker build -t 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest .    
+      - docker build -t 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest .
+      - echo analizando vulnerabilidades en imagen
+      - trivy --no-progress --exit-code 1 --severity HIGH,CRITICAL 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest   
       - echo Copiando imagen de Docker a repositorio...
       - docker push 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
