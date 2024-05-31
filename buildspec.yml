@@ -8,6 +8,10 @@ phases:
       - echo deb https://aquasecurity.github.io/trivy-repo/deb bionic main | tee -a /etc/apt/sources.list.d/trivy.list
       - apt-get update
       - apt-get install -y trivy
+      - mkdir trivy_templates && cd trivy_templates
+      - wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/junit.tpl
+      - wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl
+      - cd ..
       - echo Ingresando a Amazon ECR...
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 800103408648.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - fecha=$(date -u +"%Y-%m-%d-%H-%M-%S-UTC")
@@ -18,7 +22,7 @@ phases:
       - echo Creando imagen de Docker...
       - docker build -t 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest .
       - echo analizando vulnerabilidades en imagen
-      - trivy image --quiet --severity --format template --template "@html.tpl" -o $fecha.html HIGH,CRITICAL 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
+      - trivy image --quiet --severity --format template --template "@trivy_templates/html.tpl" -o $fecha.html HIGH,CRITICAL 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
       - aws s3 cp $fecha.html s3://trivy-vulnerabilities-reports   
       - echo Copiando imagen de Docker a repositorio...
       - docker push 800103408648.dkr.ecr.us-east-1.amazonaws.com/hello-docker-image:latest
